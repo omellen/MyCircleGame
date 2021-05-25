@@ -7,11 +7,12 @@ import java.awt.event.KeyListener;
 
 public class MovingBall extends JFrame {
 
-    private int blueX = 530;
+    private int blueX = 560;
     private int blueY = 180;
-    private int redX = 30;
+    private int redX = 0;
     private  int redY = 180;
 
+    Circle blue;
 
 
     public MovingBall() {
@@ -24,18 +25,25 @@ public class MovingBall extends JFrame {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.blue);
         g2d.fillOval(blueX, blueY, 40,40);
+        blue = new Circle(blueX + 20, blueY - 20,20);
 
         g2d.setColor(Color.red);
         g2d.fillOval(redX, redY, 40,40);
-
     }
 
     public void  checkCollisions() {
-
+        if (blue.intersects(redX,redY,40,40)) {
+            blueX = 560;
+            blueY = 180;
+            redX = 0;
+            redY = 180;
+        }
     }
 
     private class KeyListenerObject implements KeyListener {
-        public void keyTyped(KeyEvent e) { }
+        public void keyTyped(KeyEvent e) {
+            repaint();
+        }
 
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
@@ -89,12 +97,13 @@ public class MovingBall extends JFrame {
                     redX += speed;
                 }
             }
-
             repaint();
-
+            checkCollisions();
         }
 
-        public void keyReleased(KeyEvent e) { }
+        public void keyReleased(KeyEvent e) {
+            repaint();
+        }
     }
 
 }
